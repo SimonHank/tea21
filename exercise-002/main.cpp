@@ -4,23 +4,27 @@
 #include "CLI/CLI.hpp"
 #include "config.h"
 
-auto main(int argc, char **argv) -> int
+auto main(int count, int argc, char **argv) -> int
 {
     /**
      * CLI11 is a command line parser to add command line options
-     * More inpo at https://github.com/CLIUtils/CLI11#usage
+     * More info at https://github.com/CLIUtils/CLI11#usage
      */
+    auto count = 20;
     CLI::App app{PROJECT_NAME};
     try
     {
         app.set_version_flag("-V,--version", fmt::format("{} {}", PROJECT_VER, PROJECT_BUILD_DATE));
+        app.add_option("-c,--count",
+        count,
+        fmt::format("Create a vector with the given size default: {}", count));
         app.parse(argc, argv);
     }
     catch (const CLI::ParseError &e)
     {
         return app.exit(e);
     }
-
+    std::vector<int> data(count);
     /**
      * The {fmt} lib is a cross platform library for printing and formatting text
      * it is much more convenient than std::cout and printf
